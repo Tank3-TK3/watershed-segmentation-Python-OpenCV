@@ -130,6 +130,7 @@ if __name__ == '__main__':
     plt.title('IMG markers')
     plt.axis( 'off' )
 
+    #Watershed
     markers = markers+1
     unknown = cv2.cvtColor( unknown , cv2.COLOR_BGR2GRAY )
     markers[unknown==255] = 0
