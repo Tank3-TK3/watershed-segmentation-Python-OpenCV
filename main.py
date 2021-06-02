@@ -3,7 +3,6 @@
 import numpy as np
 import cv2 
 from matplotlib import pyplot as plt
-from collections import deque
 #############################################################################################
 #                                         FUNCIONES
 def doThresh( i , umb , fondo , obj ):
@@ -79,7 +78,7 @@ if __name__ == '__main__':
     name3 = './img/placa.jpg'
 
     #Leer la imagen
-    gray  = cv2.imread( name2 )
+    gray  = cv2.imread( name3 )
     plt.subplot( 1 , 1 , 1 )
     plt.imshow( gray )
     plt.title('IMG Original')
@@ -87,7 +86,7 @@ if __name__ == '__main__':
     plt.show()
 
     #Umbralizacion 
-    thresh = doThresh( gray  , umb=180 , fondo=255 , obj=0 )
+    thresh = doThresh( gray  , umb=128 , fondo=255 , obj=0 )
     plt.subplot( 2 , 3 , 1 )
     plt.imshow( thresh )
     plt.title('IMG thresh')
@@ -123,7 +122,7 @@ if __name__ == '__main__':
             dist_transform2[i][j][0] = dist_transform[i][j]
             dist_transform2[i][j][1] = dist_transform[i][j]
             dist_transform2[i][j][2] = dist_transform[i][j]
-    sure_fg = doThresh( dist_transform2 , umb=3 , fondo=0 , obj=255 )
+    sure_fg = doThresh( dist_transform2 , umb=1 , fondo=0 , obj=255 )
     plt.subplot( 2 , 3 , 5 )
     plt.imshow( sure_fg , 'gray' )
     plt.title('IMG sure_fg')
