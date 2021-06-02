@@ -129,10 +129,10 @@ if __name__ == '__main__':
     plt.title('IMG sure_fg')
     plt.axis( 'off' )
 
-    unknown = cv2.subtract( sure_bg , sure_fg )
+    borders = cv2.subtract( sure_bg , sure_fg )
     plt.subplot( 2 , 3 , 6 )
-    plt.imshow( unknown , 'gray' )
-    plt.title('IMG unknown')
+    plt.imshow( borders , 'gray' )
+    plt.title('IMG borders')
     plt.axis( 'off' )
 
     plt.show()
@@ -145,8 +145,8 @@ if __name__ == '__main__':
     plt.axis( 'off' )
 
     markers = markers+1
-    unknown = cv2.cvtColor( unknown , cv2.COLOR_BGR2GRAY )
-    markers[unknown==255] = 0
+    borders = cv2.cvtColor( borders , cv2.COLOR_BGR2GRAY )
+    markers[borders==255] = 0
     plt.subplot( 2 , 2 , 2 )
     plt.imshow( markers )
     plt.title('IMG pre-watershed')
@@ -162,7 +162,7 @@ if __name__ == '__main__':
     plt.title('IMG watershed')
     plt.axis( 'off' )
     
-    gray[waterS == -1] = [255 , 0 , 0]
+    gray[waterS == -1] = [255 , 255 , 0]
     plt.subplot( 2 , 2 , 4 )
     plt.imshow( cv2.cvtColor( gray , cv2.COLOR_BGR2RGB )  )
     plt.title( 'Coins Img con markers' )
