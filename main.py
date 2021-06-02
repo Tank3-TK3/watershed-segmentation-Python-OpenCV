@@ -58,14 +58,28 @@ def dilatacion( im ):
                         except:
                             pass
     return imgDilatada
+
+def watershed( im ):
+    water = im.copy()
+    for i in range( 0 , im.shape[0]):
+        for j in range( 0 , im.shape[1]):
+            if im[i][j] > 1:
+                for y in range( -1 , 2 ):
+                    for x in range( -1 , 2 ):
+                        try:
+                            water[i+x][j+y] = im[i][j]
+                        except:
+                            pass
+    return water
 #############################################################################################
 #                                           MAIN
 if __name__ == '__main__':
     name1 = './img/water_coins.jpg'
     name2 = './img/objetos6.jpg'
+    name3 = './img/placa.jpg'
 
     #Leer la imagen
-    gray  = cv2.imread( name2 )
+    gray  = cv2.imread( name3 )
     plt.subplot( 1 , 1 , 1 )
     plt.imshow( gray )
     plt.title('IMG Original')
@@ -109,7 +123,7 @@ if __name__ == '__main__':
             dist_transform2[i][j][0] = dist_transform[i][j]
             dist_transform2[i][j][1] = dist_transform[i][j]
             dist_transform2[i][j][2] = dist_transform[i][j]
-    sure_fg = doThresh( dist_transform2 , umb=3 , fondo=0 , obj=255 )
+    sure_fg = doThresh( dist_transform2 , umb=1 , fondo=0 , obj=255 )
     plt.subplot( 2 , 3 , 5 )
     plt.imshow( sure_fg , 'gray' )
     plt.title('IMG sure_fg')
@@ -125,23 +139,31 @@ if __name__ == '__main__':
 
     sure_fg = cv2.cvtColor( sure_fg , cv2.COLOR_BGR2GRAY )
     ret, markers = cv2.connectedComponents( sure_fg )
-    plt.subplot( 1 , 3 , 1 )
+    plt.subplot( 2 , 2 , 1 )
     plt.imshow( markers )
     plt.title('IMG markers')
     plt.axis( 'off' )
 
-    #Watershed
     markers = markers+1
     unknown = cv2.cvtColor( unknown , cv2.COLOR_BGR2GRAY )
     markers[unknown==255] = 0
-    markers = cv2.watershed( gray , markers )
-    plt.subplot( 1 , 3 , 2 )
+    plt.subplot( 2 , 2 , 2 )
     plt.imshow( markers )
-    plt.title('IMG markers')
+    plt.title('IMG pre-watershed')
     plt.axis( 'off' )
 
-    gray[markers == -1] = [255,0,0]
-    plt.subplot( 1 , 3 , 3 )
+    #markers = cv2.watershed( gray , markers )
+    waterS = watershed( markers )
+    for a in range( 0 , 0 ):
+        waterS = watershed( waterS )
+    waterS[waterS==0] = -1
+    plt.subplot( 2 , 2 , 3 )
+    plt.imshow( waterS )
+    plt.title('IMG watershed')
+    plt.axis( 'off' )
+    
+    gray[waterS == -1] = [0 , 255 , 0]
+    plt.subplot( 2 , 2 , 4 )
     plt.imshow( cv2.cvtColor( gray , cv2.COLOR_BGR2RGB )  )
     plt.title( 'Coins Img con markers' )
     plt.axis( 'off' )
