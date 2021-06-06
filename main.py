@@ -9,15 +9,10 @@ def doThresh( i , umb , fondo , obj ):
     thresh1 = np.zeros( i.shape , dtype=np.uint8 )
     for a in range( 0 , i.shape[0]):
         for b in range( 0 , i.shape[1]):
-            num = np.uint8( ( int( i[a][b][0] ) + int( i[a][b][1] ) + int( i[a][b][2] ) )/3 )
-            if num >= umb:
-                thresh1[a][b][0] = obj
-                thresh1[a][b][1] = obj
-                thresh1[a][b][2] = obj
+            if i[a][b] >= umb:
+                thresh1[a][b] = obj
             else:
-                thresh1[a][b][0] = fondo
-                thresh1[a][b][1] = fondo
-                thresh1[a][b][2] = fondo
+                thresh1[a][b] = fondo
     return thresh1
 
 def vecinos( im , i , j ):
